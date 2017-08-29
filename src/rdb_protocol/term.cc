@@ -207,6 +207,9 @@ counted_t<const term_t> compile_on_current_stack(
     case Term::FLOOR:              return make_floor_term(env, t);
     case Term::CEIL:               return make_ceil_term(env, t);
     case Term::ROUND:              return make_round_term(env, t);
+    case Term::IP_ADDRESS:         return make_ip_address_term(env, t);
+    case Term::IP_PREFIX:          return make_ip_prefix_term(env, t);
+    case Term::IP_PREFIX_CONTAINS: return make_ip_prefix_contains_term(env, t);
     default: unreachable();
     }
     unreachable();

@@ -573,6 +573,16 @@ class RqlQuery(object):
     def polygon_sub(self, *args):
         return PolygonSub(self, *args)
 
+    # IP Address support
+    def ip_address(self, *args):
+        return IPAddress(self, *args)
+
+    def ip_prefix(self, *args):
+        return IPPrefix(self, *args)
+
+    def ip_prefix_contains(self, *args):
+        return IPPrefixContains(self, *args)
+
 
 # These classes define how nodes are printed by overloading `compose`
 def needs_wrap(arg):
@@ -756,6 +766,20 @@ class ReQLDecoder(py_json.JSONDecoder):
                                   % py_json.dumps(obj))
         return RqlBinary(base64.b64decode(obj['data'].encode('utf-8')))
 
+    def convert_ip_address(self, obj):
+        if 'ip_address' not in obj:
+            raise ReqlDriverError(('psuedo-type IP_ADDRESS object %s does not ' +
+                                   'have expected field "ip_address".')
+                                  % py_json.dumps(obj))
+        return obj['ip_address']
+
+    def convert_ip_prefix(self, obj):
+        if 'ip_prefix' not in obj:
+            raise ReqlDriverError(('psuedo-type IP_PREFIX object %s does not ' +
+                                   'have expected field "ip_prefix".')
+                                  % py_json.dumps(obj))
+        return obj['ip_prefix']
+
     def convert_pseudotype(self, obj):
         reql_type = obj.get('$reql_type$')
         if reql_type is not None:
@@ -784,6 +808,20 @@ class ReQLDecoder(py_json.JSONDecoder):
                 elif binary_format != 'raw':
                     raise ReqlDriverError("Unknown binary_format run option \"%s\"."
                                          % binary_format)
+            elif reql_type == 'IP_ADDRESS':
+                ip_address_format = self.reql_format_opts.get('ip_address_format')
+                if ip_address_format is None or ip_address_format == 'native':
+                    return self.convert_ip_address(obj)
+                elif ip_address_format != 'raw':
+                    raise ReqlDriverError("Unknown ip_address_format run option \"%s\"."
+                                         % ip_address_format)
+            elif reql_type == 'IP_PREFIX':
+                ip_prefix_format = self.reql_format_opts.get('ip_prefix_format')
+                if ip_prefix_format is None or ip_prefix_format == 'native':
+                    return self.convert_ip_prefix(obj)
+                elif ip_prefix_format != 'raw':
+                    raise ReqlDriverError("Unknown ip_prefix_format run option \"%s\"."
+                                         % ip_prefix_format)
             else:
                 raise ReqlDriverError("Unknown pseudo-type %s" % reql_type)
         # If there was no pseudotype, or the relevant format is raw, return
@@ -1791,6 +1829,18 @@ class Fill(RqlMethodQuery):
 class PolygonSub(RqlMethodQuery):
     tt = pTerm.POLYGON_SUB
     st = 'polygon_sub'
+
+class IPAddress(RqlMethodQuery):
+    tt = pTerm.IP_ADDRESS
+    st = 'ip_address'
+
+class IPPrefix(RqlMethodQuery):
+    tt = pTerm.IP_PREFIX
+    st = 'ip_prefix'
+
+class IPPrefixContains(RqlMethodQuery):
+    tt = pTerm.IP_PREFIX_CONTAINS
+    st = 'ip_prefix_contains'
 
 
 # Returns True if IMPLICIT_VAR is found in the subquery

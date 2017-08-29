@@ -776,6 +776,10 @@ message Term {
         GET_NEAREST = 168;       // TABLE, PSEUDOTYPE(GEOMETRY) {index:!STRING, max_results:NUM, max_dist:NUM, geo_system:STRING, unit:STRING} -> ARRAY
         POLYGON_SUB = 171;       // PSEUDOTYPE(GEOMETRY), PSEUDOTYPE(GEOMETRY) -> PSEUDOTYPE(GEOMETRY)
 
+        IP_ADDRESS = 191;         // STRING -> PSEUDOTYPE(IP_ADDRESS)
+        IP_PREFIX = 192;          // STRING -> PSEUDOTYPE(IP_PREFIX)
+        IP_PREFIX_CONTAINS = 193; // PSEUDOTYPE(IP_PREFIX), PSEUDOTYPE(IP_ADDRESS) -> BOOL
+
         // Constants for specifying key ranges
         MINVAL = 180;
         MAXVAL = 181;

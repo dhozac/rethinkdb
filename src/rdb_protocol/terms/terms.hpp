@@ -351,6 +351,14 @@ counted_t<term_t> make_replace_term(
 counted_t<term_t> make_foreach_term(
     compile_env_t *env, const raw_term_t &term);
 
+// ip_address.cc
+counted_t<term_t> make_ip_address_term(
+    compile_env_t *env, const raw_term_t &term);
+counted_t<term_t> make_ip_prefix_term(
+    compile_env_t *env, const raw_term_t &term);
+counted_t<term_t> make_ip_prefix_contains_term(
+    compile_env_t *env, const raw_term_t &term);
+
 } // namespace ql
 
 #endif  // RDB_PROTOCOL_TERMS_TERMS_HPP_

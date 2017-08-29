@@ -15,7 +15,8 @@ __all__ = [
     'january', 'february', 'march', 'april', 'may', 'june',
     'july', 'august', 'september', 'october', 'november', 'december',
     'minval', 'maxval',
-    'geojson', 'point', 'line', 'polygon', 'distance', 'intersects', 'circle'
+    'geojson', 'point', 'line', 'polygon', 'distance', 'intersects', 'circle',
+    'ip_address', 'ip_prefix', 'ip_prefix_contains',
 ]
 
 from . import ast, ql2_pb2
@@ -336,3 +337,15 @@ def intersects(*args):
 
 def circle(*args, **kwargs):
     return ast.Circle(*args, **kwargs)
+
+
+def ip_address(*args, **kwargs):
+    return ast.IPAddress(*args, **kwargs)
+
+
+def ip_prefix(*args, **kwargs):
+    return ast.IPPrefix(*args, **kwargs)
+
+
+def ip_prefix_contains(*args, **kwargs):
+    return ast.IPPrefixContains(*args, **kwargs)
